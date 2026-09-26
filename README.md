@@ -8,3 +8,7 @@ This is the code for my website.
 - Docker image
 - GitHub action work flow
 - Utilize AI usage (Claude and ChatGPT)
+
+## Check in 9/26 
+- GitHub action work flow
+- Utilize AI usage
