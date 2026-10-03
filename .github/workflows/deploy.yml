@@ -3,6 +3,9 @@ name: Deploy
 on:
   push:
     branches: [main]
+    # Skip deploys for pushes that only change the README.
+    paths-ignore:
+      - README.md
   workflow_dispatch:
 
 # Never run two deploys at once; a newer push waits for the current one.
