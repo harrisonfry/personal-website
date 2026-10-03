@@ -1,15 +1,15 @@
 <button
   id="theme-toggle"
-  class="theme-toggle"
   type="button"
   aria-label="Switch color theme"
   title="Switch color theme"
+  class="inline-flex size-9 cursor-pointer items-center justify-center rounded-lg border border-zinc-200 text-zinc-500 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-400 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
 >
-  {/* Both icons are always in the DOM; CSS shows one based on <html data-theme>,
-      so the button paints correctly even before this component's script runs. */}
+  {/* Both icons are always in the DOM; the `dark:` variant shows one based on
+      <html data-theme>, so the button paints correctly before any JS runs. */}
   {/* Sun — shown in dark mode (click for light). */}
   <svg
-    class="icon-sun"
+    class="hidden size-[18px] dark:block"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -23,9 +23,9 @@
     <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
   </svg>
 
-  {/* Moon — shown when the light theme is active (click for dark). */}
+  {/* Moon — shown in light mode (click for dark). */}
   <svg
-    class="icon-moon"
+    class="block size-[18px] dark:hidden"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

@@ -7,9 +7,11 @@
 # Local-only.
 /scripts
 /.shots
+/.claude
 
-# Version control and editor/OS files.
+# Version control, CI and editor/OS files.
 /.git
+/.github
 /.gitignore
 /.vscode
 /.idea
@@ -23,5 +25,5 @@ Thumbs.db
 # Not needed in the container.
 /README.md
 /Dockerfile
-/Dockerfile.probe
+/docker-compose.yml
 /.dockerignore

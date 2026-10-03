@@ -9,10 +9,7 @@ interface Props {
   description?: string;
 }
 
-const {
-  title,
-  description = site.description,
-} = Astro.props;
+const { title, description = site.description } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.role}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
@@ -30,7 +27,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
@@ -47,24 +44,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
     <script is:inline set:html={themeInitScript} />
   </head>
 
-  <body>
-    <header class="site-header">
-      <div class="container">
-        <a class="brand" href="/">{site.name}</a>
-        <ThemeToggle />
-      </div>
-    </header>
+  <body class="flex min-h-screen flex-col">
+    <div class="mx-auto flex w-full max-w-2xl justify-end px-6 pt-6">
+      <ThemeToggle />
+    </div>
 
-    <main>
-      <div class="container">
-        <slot />
-      </div>
+    <main class="mx-auto w-full max-w-2xl flex-1 px-6">
+      <slot />
     </main>
 
-    <footer class="site-footer">
-      <div class="container">
-        <span>&copy; {new Date().getFullYear()} {site.name}</span>
-      </div>
+    <footer class="mx-auto w-full max-w-2xl px-6 pb-10 pt-8 text-center text-sm text-zinc-500">
+      &copy; {new Date().getFullYear()} {site.name}
     </footer>
   </body>
 </html>

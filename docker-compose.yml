@@ -1,17 +1,14 @@
+name: personal-website
+
 services:
   personal-website:
     container_name: personal-website
-    image: harrisonfry/personal-website
+    build: .
+    image: harrisonfry/personal-website:latest
+    pull_policy: build
     restart: unless-stopped
-
-  cloudflared:
-    container_name: cloudflared-tunnel
-    image: cloudflare/cloudflared
-    restart: unless-stopped
-    command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${CLOUDFLARE_TOKEN}
 
 networks:
   default:
     name: website-network
+    external: true

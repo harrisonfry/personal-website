@@ -1,0 +1,60 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two deploys at once; a newer push waits for the current one.
+concurrency:
+  group: deploy-personal-website
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and deploy on VPS
+    runs-on: self-hosted
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      # The compose file declares this network as external so it can be
+      # shared with containers managed elsewhere; make sure it exists.
+      - name: Ensure shared network exists
+        run: docker network inspect website-network >/dev/null 2>&1 || docker network create website-network
+
+      # Builds the image locally on the VPS (nothing is pushed or pulled for
+      # it; only the public base images are fetched), then replaces the
+      # container. The old container keeps serving until the build finishes.
+      - name: Build and start container
+        run: docker compose up -d --build --remove-orphans
+
+      # The Dockerfile health check first runs 30s after start, so allow 120s.
+      - name: Wait for container to become healthy
+        run: |
+          cid="$(docker compose ps -q personal-website)"
+          if [ -z "$cid" ]; then
+            echo "::error::personal-website container is not running"
+            docker compose logs --tail 50 personal-website
+            exit 1
+          fi
+          for i in $(seq 1 60); do
+            status="$(docker inspect -f '{{.State.Health.Status}}' "$cid")"
+            echo "Health: $status"
+            if [ "$status" = "healthy" ]; then exit 0; fi
+            if [ "$status" = "unhealthy" ]; then break; fi
+            sleep 2
+          done
+          echo "::error::Container did not become healthy"
+          docker compose logs --tail 50 personal-website
+          exit 1
+
+      # Old images become dangling once the tag moves to the new build.
+      - name: Remove dangling images
+        if: always()
+        run: docker image prune -f

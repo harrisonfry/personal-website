@@ -1,0 +1,19 @@
+---
+import Section from './Section.astro';
+import { education } from '../consts';
+---
+
+<Section title="Education" id="education">
+  <ul class="space-y-4">
+    {
+      education.map((entry) => (
+        <li class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+          <h3 class="font-medium">{entry.degree}</h3>
+          <p class="shrink-0 text-sm text-zinc-500 tabular-nums dark:text-zinc-400">
+            {entry.start} – {entry.end}
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</Section>

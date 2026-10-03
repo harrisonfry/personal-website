@@ -1,104 +1,16 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import Icon from '../components/Icon.astro';
-import profilePicture from '../assets/profile-picture.jpg';
-import { site } from '../consts';
-
-/**
- * Placeholder projects — replace these with your real work.
- * Each entry renders as a card; `href` is optional.
- */
-const projects = [
-  {
-    title: 'Project One',
-    description: 'A short, one-line description of what it does and the stack it uses.',
-    href: site.github,
-  },
-  {
-    title: 'Project Two',
-    description: 'A short, one-line description of what it does and the stack it uses.',
-    href: site.github,
-  },
-  {
-    title: 'Project Three',
-    description: 'A short, one-line description of what it does and the stack it uses.',
-    href: site.github,
-  },
-];
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Education from '../components/Education.astro';
+import Experience from '../components/Experience.astro';
+import Contact from '../components/Contact.astro';
 ---
 
 <Layout>
-  <section class="hero">
-    <div class="hero-text">
-      <h1>{site.name}</h1>
-    </div>
-
-    {/* height + widths makes Astro emit a srcset and use the smallest variant
-        as the fallback src, so the full-size original is never downloaded. */}
-    <Image
-      class="avatar"
-      src={profilePicture}
-      alt={`Portrait of ${site.name}`}
-      height={116}
-      widths={[116, 232]}
-      sizes="116px"
-      loading="eager"
-      format="webp"
-      quality={82}
-    />
-  </section>
-
-  <section class="section">
-    <h2 class="section-title">About</h2>
-    <div class="prose">
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
-      </p>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2 class="section-title">Selected work</h2>
-    <ul class="link-list">
-      {
-        projects.map((project) => (
-          <li>
-            <a class="link-card" href={project.href} target="_blank" rel="noopener noreferrer">
-              <span class="link-card-body">
-                <span class="link-card-label">{project.title}</span>
-                <span class="link-card-value">{project.description}</span>
-              </span>
-              <Icon name="arrow-up-right" class="link-card-arrow" />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="section">
-    <h2 class="section-title">Get in touch</h2>
-    <ul class="link-list">
-      <li>
-        <a class="link-card" href={`mailto:${site.email}`}>
-          <Icon name="mail" class="icon" />
-          <span class="link-card-body">
-            <span class="link-card-label">Email</span>
-            <span class="link-card-value">{site.email}</span>
-          </span>
-        </a>
-      </li>
-      <li>
-        <a class="link-card" href={site.github} target="_blank" rel="noopener noreferrer">
-          <Icon name="github" class="icon" />
-          <span class="link-card-body">
-            <span class="link-card-label">GitHub</span>
-            <span class="link-card-value">github.com/{site.githubHandle}</span>
-          </span>
-          <Icon name="arrow-up-right" class="link-card-arrow" />
-        </a>
-      </li>
-    </ul>
-  </section>
+  <Hero />
+  <About />
+  <Education />
+  <Experience />
+  <Contact />
 </Layout>

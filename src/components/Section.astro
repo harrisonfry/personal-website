@@ -1,0 +1,20 @@
+---
+/** Shared wrapper for each content section: divider, eyebrow heading, body. */
+interface Props {
+  title: string;
+  id?: string;
+}
+
+const { title, id } = Astro.props;
+const headingId = `${id ?? title.toLowerCase().replace(/\s+/g, '-')}-heading`;
+---
+
+<section id={id} aria-labelledby={headingId} class="border-t border-zinc-200 py-9 dark:border-zinc-800">
+  <h2
+    id={headingId}
+    class="mb-5 text-xs font-semibold tracking-[0.09em] text-zinc-500 uppercase dark:text-zinc-400"
+  >
+    {title}
+  </h2>
+  <slot />
+</section>
