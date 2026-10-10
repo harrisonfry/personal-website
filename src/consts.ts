@@ -4,7 +4,7 @@ export const site = {
   role: 'Information Technology professional',
   description:
     'Harrison Fry is an Information Technology professional and long-time homelabber.',
-  email: 'harrsion@harrisonafry.com',
+  email: 'harrison@harrisonafry.com',
   github: 'https://github.com/harrisonfry/',
   githubHandle: 'harrisonfry',
 } as const;
