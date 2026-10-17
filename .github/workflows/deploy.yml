@@ -26,14 +26,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
-      # The compose file declares this network as external so it can be
-      # shared with containers managed elsewhere; make sure it exists.
       - name: Ensure shared network exists
         run: docker network inspect website-network >/dev/null 2>&1 || docker network create website-network
 
-      # Builds the image locally on the VPS (nothing is pushed or pulled for
-      # it; only the public base images are fetched), then replaces the
-      # container. The old container keeps serving until the build finishes.
       - name: Build and start container
         run: docker compose up -d --build --remove-orphans
 
@@ -57,7 +52,6 @@ jobs:
           docker compose logs --tail 50 personal-website
           exit 1
 
-      # Old images become dangling once the tag moves to the new build.
       - name: Remove dangling images
         if: always()
         run: docker image prune -f
