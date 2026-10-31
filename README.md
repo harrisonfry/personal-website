@@ -158,7 +158,7 @@ The first command only needs to be run once. The container has no published port
 1. Go to <https://harrisonafry.com>.
 2. Scroll through the About Me, Education, and Experience sections.
 3. Use the sun/moon button in the top-right corner to switch between light and dark themes.
-4. Use **Contact Me** to send an email, or the GitHub button to view my GitHub profile.
+4. Use **Email** to send me an email, or the **Github** and **Linkedin** buttons to view my profiles.
 
 ### As the site owner (updating content)
 

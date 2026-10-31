@@ -3,16 +3,21 @@
 interface Props {
   title: string;
   id?: string;
+  /** Center the heading instead of left-aligning it. */
+  centered?: boolean;
 }
 
-const { title, id } = Astro.props;
+const { title, id, centered = false } = Astro.props;
 const headingId = `${id ?? title.toLowerCase().replace(/\s+/g, '-')}-heading`;
 ---
 
 <section id={id} aria-labelledby={headingId} class="border-t border-zinc-200 py-9 dark:border-zinc-800">
   <h2
     id={headingId}
-    class="mb-5 text-xs font-semibold tracking-[0.09em] text-zinc-500 uppercase dark:text-zinc-400"
+    class:list={[
+      'mb-5 text-xs font-semibold tracking-[0.09em] text-zinc-500 uppercase dark:text-zinc-400',
+      { 'text-center': centered },
+    ]}
   >
     {title}
   </h2>
