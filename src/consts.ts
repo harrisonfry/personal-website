@@ -6,7 +6,7 @@ export const site = {
     'Harrison Fry is an Information Technology professional and long-time homelabber.',
   email: 'harrison@harrisonafry.com',
   github: 'https://github.com/harrisonfry/',
-  githubHandle: 'harrisonfry',
+  linkedin: 'https://www.linkedin.com/in/harrisonafry',
 } as const;
 
 export interface EducationEntry {

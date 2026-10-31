@@ -2,26 +2,30 @@
 import Section from './Section.astro';
 import Icon from './Icon.astro';
 import { site } from '../consts';
+
+const outlineButton =
+  'inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-200 px-5 py-2.5 font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-100';
 ---
 
-<Section title="Get in Touch" id="contact">
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+<Section title="Get in Touch" id="contact" centered>
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
     <a
       href={`mailto:${site.email}`}
-      class="inline-flex items-center justify-center gap-2 rounded-lg bg-accent-600 px-5 py-2.5 font-medium text-white shadow-sm transition-colors hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-400 dark:hover:text-zinc-950"
+      class="inline-flex items-center justify-center gap-2 rounded-lg border border-transparent bg-accent-600 px-5 py-2.5 font-medium text-white shadow-sm transition-colors hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-400 dark:hover:text-zinc-950"
     >
       <Icon name="mail" class="size-5" />
-      Contact Me
+      Email
     </a>
 
-    <a
-      href={site.github}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-200 px-5 py-2.5 font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50 hover:text-zinc-900 dark:border-zinc-800 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"
-    >
+    <a href={site.github} target="_blank" rel="noopener noreferrer" class={outlineButton}>
       <Icon name="github" class="size-5" />
-      github.com/{site.githubHandle}
+      Github
+      <Icon name="arrow-up-right" class="size-4 text-zinc-400" />
+    </a>
+
+    <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class={outlineButton}>
+      <Icon name="linkedin" class="size-5" />
+      Linkedin
       <Icon name="arrow-up-right" class="size-4 text-zinc-400" />
     </a>
   </div>
