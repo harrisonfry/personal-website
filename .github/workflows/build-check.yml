@@ -1,0 +1,66 @@
+name: Build check
+
+# Builds and smoke-tests the production Docker image for every pull request
+# into main, so a broken change (including Dependabot updates) shows up as a
+# failed check before it's merged and deployed.
+on:
+  pull_request:
+    branches: [main]
+    # Skip PRs that only touch files that aren't part of the site build.
+    paths-ignore:
+      - "**.md"
+      - "images/**"
+      - ".gitignore"
+      - ".github/dependabot.yml"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+# A newer push to the same PR cancels the older, now-outdated check.
+concurrency:
+  group: build-check-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and smoke-test image
+    # GitHub-hosted runner on purpose: PR code (including from forks of this
+    # public repo) must never run on the self-hosted VPS runner.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      # Runs the same multi-stage build as production: pnpm install with the
+      # frozen lockfile, astro build, then the nginx runtime image.
+      - name: Build image
+        run: docker build --pull -t site-check .
+
+      - name: Check nginx config
+        run: docker run --rm site-check nginx -t
+
+      - name: Start container and request pages
+        run: |
+          docker run -d --name site-check -p 8080:80 site-check
+          for i in $(seq 1 15); do
+            if curl -fsS -o /dev/null http://localhost:8080/; then break; fi
+            sleep 1
+          done
+          curl -fsS -o /dev/null http://localhost:8080/
+          echo "Home page: OK"
+          code="$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/does-not-exist)"
+          if [ "$code" != "404" ]; then
+            echo "::error::Expected 404 for a missing page, got $code"
+            exit 1
+          fi
+          echo "404 page: OK"
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs site-check || true
