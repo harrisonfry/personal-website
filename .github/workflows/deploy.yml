@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Ensure shared network exists
         run: docker network inspect website-network >/dev/null 2>&1 || docker network create website-network
