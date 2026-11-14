@@ -1,12 +1,8 @@
 name: Build check
 
-# Builds and smoke-tests the production Docker image for every pull request
-# into main, so a broken change (including Dependabot updates) shows up as a
-# failed check before it's merged and deployed.
 on:
   pull_request:
     branches: [main]
-    # Skip PRs that only touch files that aren't part of the site build.
     paths-ignore:
       - "**.md"
       - "images/**"
@@ -15,7 +11,6 @@ on:
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
-# A newer push to the same PR cancels the older, now-outdated check.
 concurrency:
   group: build-check-${{ github.ref }}
   cancel-in-progress: true
@@ -26,8 +21,6 @@ permissions:
 jobs:
   build:
     name: Build and smoke-test image
-    # GitHub-hosted runner on purpose: PR code (including from forks of this
-    # public repo) must never run on the self-hosted VPS runner.
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -37,8 +30,6 @@ jobs:
         with:
           persist-credentials: false
 
-      # Runs the same multi-stage build as production: pnpm install with the
-      # frozen lockfile, astro build, then the nginx runtime image.
       - name: Build image
         run: docker build --pull -t site-check .
 
