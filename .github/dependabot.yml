@@ -1,0 +1,41 @@
+# Dependabot opens PRs on a schedule to keep dependencies up to date.
+# Docs: https://docs.github.com/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+version: 2
+updates:
+  # npm packages (package.json + pnpm-lock.yaml)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    # Skip versions published in the last 3 days; malicious releases are
+    # usually caught and pulled within that window.
+    cooldown:
+      default-days: 3
+    # One PR per week for minor/patch updates. Major updates (which can break
+    # things) still get their own PR each, so they can be reviewed separately.
+    groups:
+      npm-minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  # Docker base images in the Dockerfile. nginx:alpine has no version number,
+  # so Dependabot can't track it; the weekly --pull rebuild keeps it patched.
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    ignore:
+      # Stay on Node 24 (the current LTS line) until deliberately upgraded.
+      - dependency-name: "node"
+        update-types: ["version-update:semver-major"]
+
+  # Actions used by the workflows in .github/workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    groups:
+      github-actions:
+        patterns: ["*"]
