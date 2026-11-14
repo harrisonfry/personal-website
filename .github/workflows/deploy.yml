@@ -3,12 +3,14 @@ name: Deploy
 on:
   push:
     branches: [main]
-    # Skip deploys for pushes that only change the README.
     paths-ignore:
-      - README.md
+      - "**.md"
+      - "images/**"
+      - ".gitignore"
+      - ".github/dependabot.yml"
+      - ".github/workflows/build-check.yml"
   workflow_dispatch:
 
-# Never run two deploys at once; a newer push waits for the current one.
 concurrency:
   group: deploy-personal-website
   cancel-in-progress: false
@@ -29,10 +31,12 @@ jobs:
       - name: Ensure shared network exists
         run: docker network inspect website-network >/dev/null 2>&1 || docker network create website-network
 
-      - name: Build and start container
-        run: docker compose up -d --build --remove-orphans
+      - name: Build image
+        run: docker compose build --pull
 
-      # The Dockerfile health check first runs 30s after start, so allow 120s.
+      - name: Start container
+        run: docker compose up -d --remove-orphans
+
       - name: Wait for container to become healthy
         run: |
           cid="$(docker compose ps -q personal-website)"

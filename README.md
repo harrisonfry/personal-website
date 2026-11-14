@@ -91,7 +91,7 @@ Self-hosted GitHub Actions runner on the VPS
   5. Removes old, unused images
 ```
 
-Pushes that only change `README.md` do not trigger a deploy.
+Pushes that only change documentation (`*.md`), the README screenshots in `images/`, or repo config that doesn't affect the build (`.gitignore`, the Dependabot config, the build-check workflow) do not trigger a deploy. The site is also rebuilt every Monday so the base images pick up security patches.
 
 ## 6. Installation
 

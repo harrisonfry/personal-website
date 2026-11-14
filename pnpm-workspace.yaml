@@ -7,11 +7,5 @@ allowBuilds:
 
 # pnpm 12 defaults `minimumReleaseAge` to 24h: it refuses to install packages
 # published within the last day, as protection against freshly-published
-# malicious releases. These three are transitive dependencies of Astro that were
-# published hours before this project was first installed, so they are exempted
-# here to keep the lockfile usable. They are safe to remove once they age past
-# 24h — the exemption is not needed for normal installs.
-minimumReleaseAgeExclude:
-  - magicast
-  - nanoid
-  - zod
+# malicious releases. Keep that default; don't add packages to
+# `minimumReleaseAgeExclude` unless an install is blocked and can't wait a day.
