@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   build:
-    name: Build and smoke-test image
+    name: Run build check
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
