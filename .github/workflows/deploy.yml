@@ -3,23 +3,14 @@ name: Deploy
 on:
   push:
     branches: [main]
-    # Skip deploys for pushes that only touch files that aren't part of the
-    # site: docs, README screenshots, and repo/CI config that doesn't affect
-    # the build. (Listing what to skip, not what to include, means a new kind
-    # of site file still triggers a deploy by default.)
     paths-ignore:
       - "**.md"
       - "images/**"
       - ".gitignore"
       - ".github/dependabot.yml"
       - ".github/workflows/build-check.yml"
-  # Weekly rebuild (Mondays 09:00 UTC) so the nginx and Node base images pick up
-  # security patches even when the site itself hasn't changed.
-  schedule:
-    - cron: "0 9 * * 1"
   workflow_dispatch:
 
-# Never run two deploys at once; a newer push waits for the current one.
 concurrency:
   group: deploy-personal-website
   cancel-in-progress: false
@@ -40,15 +31,12 @@ jobs:
       - name: Ensure shared network exists
         run: docker network inspect website-network >/dev/null 2>&1 || docker network create website-network
 
-      # --pull fetches the newest base images instead of reusing cached ones,
-      # so security patches in nginx:alpine / node:24-alpine are picked up.
       - name: Build image
         run: docker compose build --pull
 
       - name: Start container
         run: docker compose up -d --remove-orphans
 
-      # The Dockerfile health check first runs 30s after start, so allow 120s.
       - name: Wait for container to become healthy
         run: |
           cid="$(docker compose ps -q personal-website)"
